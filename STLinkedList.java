@@ -3,34 +3,51 @@ import java.util.NoSuchElementException;
 
 public class STLinkedList<Key, Value> implements Iterable<Key>
 {
-    private STNode<Key, Value> current;
+    private STNode current;
     private int n;
 
-    private class STNode<Key, Value>
+    private class STNode
 	{
 	    Key key;
 	    Value value;
-	    STNode<Key, Value> next;
+	    STNode next;
+
+	    public STNode(Key key, Value value, STNode next)
+	    {
+		this.key = key;
+		this.value = value;
+		this.next = next;
+	    }
 	}
 
     public STLinkedList()
 	{
-	    current = null;
-	    n = 0;
 	}
 
     public void put(Key key, Value value)
     {
-	STNode<Key, Value> oldcurrent = current;
-	current = new STNode<Key, Value>();
-	current.key = key;
-	current.value = value;
-	current.next = oldcurrent;
+	if (key == null) throw new IllegalArgumentException("No key supplied");
+	
+	for (STNode x = current; x != null; x = x.next)
+	    {
+		if(key.equals(x.key))
+		    {
+			x.value = value;
+			return;
+		    }
+	    }
+	current = new STNode(key, value, current);
 	n++;
     }
 
     public Value get(Key key)
     {
+	if (key == null) throw new IllegalArgumentException("No key supplied");
+	for ( STNode x = current; x != null; x = x.next)
+	    {
+		if (key.equals(x.key))
+		    return x.value;
+	    }
 	return null;
     }
 
@@ -61,9 +78,9 @@ public class STLinkedList<Key, Value> implements Iterable<Key>
 
     public class ListIterator implements Iterator<Key>
     {
-	STNode<Key, Value> pos;
+	STNode pos;
 
-	public ListIterator(STNode<Key, Value> current)
+	public ListIterator(STNode current)
 	    {
 		pos = current;
 	    }
@@ -103,6 +120,7 @@ public class STLinkedList<Key, Value> implements Iterable<Key>
 
 	
 	for (String s : st)
-	    StdOut.println(s);
+	    StdOut.println(s + " " + st.get(s));
+
     }
 }
