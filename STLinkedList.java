@@ -1,4 +1,7 @@
-public class STLinkedList<Key, Value>
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class STLinkedList<Key, Value> implements Iterable<Key>
 {
     private STNode<Key, Value> current;
     private int n;
@@ -50,9 +53,41 @@ public class STLinkedList<Key, Value>
 	return n;
     }
 
-    //    public Iterable<Key> keys()
-    //    {
-    //    }
+    public Iterator<Key> iterator()
+    {
+	return new ListIterator(current);
+    }
+
+
+    public class ListIterator implements Iterator<Key>
+    {
+	STNode<Key, Value> pos;
+
+	public ListIterator(STNode<Key, Value> current)
+	    {
+		pos = current;
+	    }
+
+	public boolean hasNext()
+	{
+	    return pos != null;
+	}
+
+	public Key next()
+	{
+	    if (!hasNext())
+		throw new NoSuchElementException();
+
+	    Key key = pos.key;
+	    pos = pos.next;
+	    return key;
+	}
+
+	public void remove()
+	{
+	    throw new UnsupportedOperationException();
+	}
+    }
 
     public static void main(String[] args)
     {
@@ -66,7 +101,8 @@ public class STLinkedList<Key, Value>
 
 	StdOut.println("Size of ST is :" + st.size());
 
-	//	for (String s : st.keys())
-	//	    StdOut.println(s + " " + st.get(s));
+	
+	for (String s : st)
+	    StdOut.println(s);
     }
 }
