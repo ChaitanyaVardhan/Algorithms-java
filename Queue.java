@@ -14,7 +14,7 @@ public class Queue<Item> implements Iterable<Item> {
 	    Node oldlast = last;
 	    this.item = item;
 	    this.next = null;
-	    if (isEmpty()) first = last;
+	    if (isEmpty()) first = this;
 	    else           oldlast.next = this;
 	}
 
@@ -79,15 +79,28 @@ public class Queue<Item> implements Iterable<Item> {
 
 	while (!StdIn.isEmpty()) {
 	    item = StdIn.readString();
-	    if (!item.equals("-"))
+	    if (!item.equals("-")) {
+		StdOut.println("first item is :" + queue.first);
+		StdOut.println("last item is :" + queue.last);
 		queue.enqueue(item);
+	    }
 	    else if (!queue.isEmpty())
 		StdOut.print(queue.dequeue() + " ");
 	}
 	StdOut.println("(" + queue.size() + " items left on the queue)");
 
-        StdOut.println("Iterator");
+	StdOut.println("Iterate through the queue");
 	for (String s : queue)
 	    StdOut.print(s + " ");
+
+	//	Iterator<String> i = queue.iterator();
+	//        StdOut.println("Iterator has next: " + i.hasNext());
+	//	while (i.hasNext())
+	//	    {
+	//		String s = i.next();
+	//		StdOut.println(s);
+	//	    }
+
+	queue.dequeue();
     }
 }
