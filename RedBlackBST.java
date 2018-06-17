@@ -41,6 +41,16 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 	return max(root).key;
     }
 
+    public Iterable<Key> keys() {
+	return keys(min(), max());
+    }
+
+    public Iterable<Key> keys(Key lo, Key hi) {
+	Queue<Key> queue = new Queue<Key>();
+	keys(root, queue, lo, hi);
+	return queue;
+    }
+
     private Node put(Node h, Key key, Value val) {
 	if (h == null) return new Node(key, val, RED, 1);
 
@@ -63,6 +73,20 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 	else return max(x.right);
     }
 
+    private void keys(Node x, Queue<Key> queue, Key lo, Key hi) {
+	if (x == null) return;
+	int cmplo = lo.compareTo(x.key);
+	int cmphi = hi.compareTo(x.key);
+	StdOut.print("key :"+ x.key + " cmplo :" + cmplo + " cmphi :" + cmphi + "\n");
+	if (cmplo < 0) keys(x.left, queue, lo, hi);
+	if (cmplo <= 0 && cmphi >= 0) {
+	    StdOut.println("Enqueing : " + x.key);
+	    queue.enqueue(x.key);
+	}
+	if (cmphi > 0) keys(x.right, queue, lo, hi);
+
+    }
+
     public static void main(String[] args) {
 	RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
 	for (int i = 0; !StdIn.isEmpty(); i++) {
@@ -72,5 +96,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 	}
 	StdOut.println("Min key is: "+ st.min());
 	StdOut.println("Max key is: "+ st.max());
+	StdOut.print("Iterable :" + st.keys());
+	for (String key : st.keys())
+	    StdOut.println("Key :" + key);
     }
 }
